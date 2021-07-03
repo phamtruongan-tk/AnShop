@@ -1,0 +1,12 @@
+
+.fa-thumbs-up{
+    font-size: 15px;
+    color: rgb(0,123,255);
+}
+.fa-thumbs-down{
+    font-size: 15px;
+    color: red;
+}
+.main_menu_side i{
+    margin-right: 10px;
+}
