@@ -1,5 +1,8 @@
-<?php 
-    class Home extends Controller {
+<?php
+
+use function PHPSTORM_META\elementType;
+
+class Home extends Controller {
         public function Default(){
             $cates_5 = $this->Model('Cate')->getCates_5();
             $cates_read_more = $this->Model('Cate')->getCatesReadMore();
@@ -84,7 +87,45 @@
         }
         public function logout(){
             unset($_SESSION['user']);
+            unset($_SESSION['user_email']);
             header('Location: '.$this->base_url .'');
+        }
+        public function changePass(){
+            return $this->ViewFrontend('change-pass');
+        }
+        public function postChangePass(){
+            if($_SERVER['REQUEST_METHOD']=='POST'){
+                $old_pass = $_POST['old_pass'];
+                $new_pass = $_POST['new_pass'];
+                $re_pass = $_POST['re_pass'];
+                $hash_pass = password_hash($_POST['new_pass'], PASSWORD_DEFAULT);
+                $user = $this->Model('User')->getUserbyEmail($_SESSION['user_email']);
+                $user = mysqli_fetch_array($user,MYSQLI_ASSOC); 
+
+                if(! password_verify($old_pass, $user['user_password'])){
+                    $_SESSION['mes']= "<div class ='text-center text-danger'>Sai mật khẩu</div>";
+                }elseif($re_pass != $new_pass){
+                    $_SESSION['mes']= "<div class ='text-center text-danger'>Xác nhận mật khẩu không chính xác </div>";
+                }elseif(strlen($new_pass)<8){
+                    $_SESSION['mes']  = "<div class ='text-center text-danger'>Mật khẩu phải dài hơn 8 ký tự </div>";
+                    header('Location: '.$this->base_url .'/home/register');
+                 }elseif(!preg_match("#[0-9]+#",$new_pass)){
+                    $_SESSION['mes']  = "<div class ='text-center text-danger'>Mật khẩu phải có ít nhất 1 số </div>";
+                    header('Location: '.$this->base_url .'/home/register');
+                 }elseif(!preg_match("#[A-Z]+#",$new_pass)) {
+                    $_SESSION['mes']  = "<div class ='text-center text-danger'>Mật khẩu phải chứa một ký tự viết hoa </div>";
+                    header('Location: '.$this->base_url .'/home/register');
+                 }
+                 elseif(!preg_match("#[a-z]+#",$new_pass)) {
+                    $_SESSION['mes']  = "<div class ='text-center text-danger'>Mật khẩu phải chứa một ký tự thường </div>";
+                    header('Location: '.$this->base_url .'/home/register');
+                 }else{
+                    $this->Model('User')->changePass($_SESSION['user_email'],$hash_pass);
+                    $_SESSION['mes']  = "<div class ='text-center text-danger'>Đã thay đổi mật khẩu </div>";
+                }
+
+                header('Location: ' . $_SERVER['HTTP_REFERER']);
+            }
         }
 
 

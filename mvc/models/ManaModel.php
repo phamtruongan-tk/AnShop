@@ -22,6 +22,10 @@
             $query = "SELECT * FROM admin WHERE admin_email = '$email'";
             return mysqli_query($this->con,$query);
         }
+        public function changePass($admin_email,$new_pass){
+            $query = "UPDATE admin SET admin_password = '$new_pass' WHERE admin_email = '$admin_email'";
+            return mysqli_query($this->con,$query);
+        }
         
     }
 

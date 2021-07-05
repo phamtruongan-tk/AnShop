@@ -70,6 +70,7 @@
                         <?php }else{ ?>
                         <span class="account-name" href=""><i class="fas fa-user"></i><?php echo mb_convert_case($_SESSION['user'] ,MB_CASE_TITLE) ?>
                             <ul class="wp-account">
+                                <li><a href="home/changepass">Thay đổi mật khẩu</a></li>
                                 <li><a href="cart/yourorder">Đơn hàng</a></li>
                                 <li><a href="home/logout">Đăng xuất</a></li>
                             </ul>

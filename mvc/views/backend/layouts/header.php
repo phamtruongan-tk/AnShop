@@ -10,12 +10,7 @@
                     <img src="public/backend/gentelella-master/production/images/img.jpg" alt=""><?php echo strtoupper($_SESSION['admin']) ?>
                     </a>
                     <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item"  href="javascript:;"> Hồ sơ</a>
-                        <a class="dropdown-item"  href="javascript:;">
-                        <span class="badge bg-red pull-right">50%</span>
-                        <span>Cài đặt</span>
-                        </a>
-                        <a class="dropdown-item"  href="javascript:;">Trợ giúp</a>
+                        <a class="dropdown-item"  href="admin/changepass">Thay đổi mật khẩu</a>
                         <a class="dropdown-item"  href="admin/logout"><i class="fa fa-sign-out pull-right"></i> Đăng xuất</a>
                     </div>
                 </li>

@@ -21,6 +21,10 @@
             $query = "DELETE FROM users WHERE user_id ='$id'";
             mysqli_query($this->con,$query);
         }
+        public function changePass($user_email,$new_pass){
+            $query = "UPDATE users SET user_password = '$new_pass' WHERE user_email = '$user_email'";
+            return mysqli_query($this->con,$query);
+        }
 
     }
 

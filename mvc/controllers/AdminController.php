@@ -13,6 +13,7 @@
                 if(!empty($admin)){
                         if(password_verify($password,$admin['admin_password'])){
                             $_SESSION['admin'] = $admin['admin_name'];
+                            $_SESSION['admin_email'] = $admin['admin_email'];
                             header('Location: '.$this->base_url .'/admin/listbill/1');
                         }
                         else{
@@ -29,6 +30,32 @@
             unset($_SESSION['admin']);
             header('Location:'.$this->base_url.'/admin');
 
+        }
+        public function changePass(){
+            return $this->ViewBackend('master',[
+                'page'=>'change-pass'
+            ]);
+        }
+        public function postChangePass(){
+            if($_SERVER['REQUEST_METHOD']=='POST'){
+                $old_pass = $_POST['old_pass'];
+                $new_pass = $_POST['new_pass'];
+                $re_pass = $_POST['re_pass'];
+                $hash_pass = password_hash($_POST['new_pass'], PASSWORD_DEFAULT);
+                $admin = $this->Model('Mana')->getAdminbyEmail($_SESSION['admin_email']);
+                $admin = mysqli_fetch_array($admin,MYSQLI_ASSOC); 
+
+                if(! password_verify($old_pass, $admin['admin_password'])){
+                    $_SESSION['mes']= 'Sai mật khẩu';
+                }elseif($re_pass != $new_pass){
+                    $_SESSION['mes']= 'Xác nhận mật khẩu chưa chính xác';
+                }else{
+                    $this->Model('Mana')->changePass($_SESSION['admin_email'],$hash_pass);
+                    $_SESSION['mes']= 'Đã thay đổi mật khẩu';
+                }
+
+                header('Location: ' . $_SERVER['HTTP_REFERER']);
+            }
         }
         
         // cate
